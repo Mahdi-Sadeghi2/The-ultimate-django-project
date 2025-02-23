@@ -1,0 +1,29 @@
+{% extends 'djangobasicapp/layout.html' %}
+{% block content %}
+    <div class="container-fluid">
+        <h2>Users List</h2>
+        <div class="row">
+        {% for user in users %}
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">User {{ user.id }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl>
+                            <img src={{images}} class="img-fluid" alt="Responsive image">
+                            <dt>First Name</dt>
+                            <dd>{{ user.firstname }}</dd>
+                            <dt>Last Name</dt>
+                            <dd>{{ user.lastname }}</dd>
+                            <dt>Email</dt>
+                            <dd>{{ user.email }}</dd>
+                            
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

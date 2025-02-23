@@ -1,0 +1,27 @@
+{% extends 'djangobasicapp/layout.html' %}
+{% block content %}
+    <!-- <h1>The current time is {{todaydate}}</h1> -->
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Day</td>
+                <td>Month</td>
+                <td>Year</td>
+                <td>hour</td>
+                <td>minute</td>
+                <td>second</td>
+            </tr>
+            <tr>
+                <td>{{ todaydate | date:'d'}}</td>
+                <td>{{ todaydate | date:'m'}}</td>
+                <td>{{ todaydate | date:'Y'}}</td>
+                <td>{{ todaydate | time:'H'}}</td>
+                <td>{{ todaydate | time:'i'}}</td>
+                <td>{{ todaydate | time:'s'}}</td>
+               
+
+            </tr>
+        </thead>
+    </table>
+    <!-- <h2>The current date is {{today}}</h2> -->
+{% endblock %}

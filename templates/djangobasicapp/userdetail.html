@@ -1,0 +1,82 @@
+{% extends 'djangobasicapp/layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <h2>User Details</h2>
+        <div class="col-6">
+            <div class="card w-75 p-2">
+                <div class="card-header" style="height: 300px;">
+                    <p><b>User Name : {{ user.username }}</b></p>
+                    <img src={{images}} class="img-fluid" alt="User Avatar" style="width: 100%;height: 100%;object-fit: cover;object-position: center">
+                </div>
+                <div class="card-body d-flex flex-column align-items-center">
+                    <dl>
+                        <dt>First Name</dt>
+                        <dd>{{user.name.firstname}}</dd>
+                        <dt>Last Name</dt>
+                        <dd>{{user.name.lastname}}</dd>
+                        <dt>Email</dt>
+                        <dd>{{user.email}}</dd>
+                        <dt>Phone</dt>
+                        <dd>{{user.phone}}</dd>
+                    </dl>
+                </div>
+                <div class="crad-footer">
+                    <form method="post" action="{% url 'userdetail' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="useridcounter" value="{{user.id}}">
+                    <button value="Next" type="submit" name="btnNext" class="btn btn-danger btn-sm">
+                        <span class="bi bi-chevron-right"></span>Next User
+                    </button>
+                    <button value="Previous" type="submit" name="btnPrevious" class="btn btn-danger me-2">
+                        <span class="bi bi-chevron-left"></span>Previous User
+                    </button>
+                    <input type="checkbox" class="form-check-input" id="chkShowHide" onclick="toggleAll()">
+                    <label id="lblbShowHide" for="chkShowHide">Show Address Details</label>    
+                </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <h2>Address Details</h2>
+            <div class="card w-50 p-2" id="UserDetails-{{user.id}}" style="display:none">
+                
+            <div class="card-header" style="height: 100px;">
+                  <p><b>City: {{ user.address.city }}</b></p>  
+            </div>
+            <div class="card-body">
+                <dl>
+                <dt>Street</dt>
+                <dd>{{ user.address.street}}</dd>
+                <dt>Street Number</dt>
+                <dd>{{user.address.number}}</dd>
+                <dt>Zip Code</dt>
+                <dd>{{ user.address.zipcode}}</dd>
+                <dt>Geo Location Latitude</dt>
+                <dd>{{ user.address.geolocation.lat}}</dd>
+                <dt>Geo Location Longitude</dt>
+                <dd>{{user.address.geolocation.long}}</dd>
+                </dl>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleAll()
+            {
+                // find all dive elements which is id's is given id
+                $('div[id*="UserDetails-"]').toggle();
+                // find the given text equals to
+                if ($("#lblbShowHide").text() == "Hide Address Details")
+                    // show the given text to the given text
+                    $("#lblbShowHide").text("Show Address Details")
+                else
+                    // show the given text to the given text
+                    $("#lblbShowHide").text("Hide Address Details")
+            }
+</script>
+
+{% endblock%}

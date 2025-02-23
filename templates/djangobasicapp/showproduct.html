@@ -1,0 +1,45 @@
+{% extends 'djangobasicapp/layout.html' %}
+{% block content %}
+    <h1>Product List</h1>
+    <p>Total Products: {{ total_products }}</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Quantity</td>
+                <td>In Stock</td>
+                <td>Discontinued</td>
+                <td>Cost</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.productID }}</td>
+                <td>{{ product.productName }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.unitsInStock }}</td>
+                <td>{{ product.disContinued }}</td>
+                <td>{{ product.cost }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        <p>Processors: {{ processors|length }}</p> 
+        <select>
+            {% for processer in processors %}
+            <optgroup label="{{ processer.Category }}">
+                {% for processername in processer.processors %}
+                <option>
+                    {{ processername }}
+                </option>
+                {% endfor %}
+            </optgroup>
+            {% empty %}
+            <option>No processors available</option>
+            {% endfor %}
+        </select>
+    </div> 
+{% endblock %}   

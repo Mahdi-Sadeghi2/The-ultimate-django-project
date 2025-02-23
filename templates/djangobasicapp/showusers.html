@@ -1,0 +1,44 @@
+{% extends 'djangobasicapp/layout.html' %}
+{% block content %}
+    <!-- <h1>The current time is {{todaydate}}</h1> -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Mail</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Firtname</th>
+                <th>Lastname</th>
+                <th>City</th>
+                <th>Street</th>
+                <th>Street Number</th>
+                <th>Zip Code</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Phone</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id  }}</td>
+                <td>{{  user.email }}</td>
+                <td>{{  user.username }}</td>
+                <td>{{  user.password }}</td>
+                <td>{{  user.name.firstname }}</td>
+                <td>{{  user.name.lastname }}</td>
+                <td>{{  user.address.city }}</td>
+                <td>{{  user.address.street }}</td>
+                <td>{{  user.address.number }}</td>
+                <td>{{  user.address.zipcode }}</td>
+                <td>{{  user.address.geolocation.lat }}</td>
+                <td>{{  user.address.geolocation.long }}</td>
+                <td>{{  user.phone }}</td>
+               
+
+            </tr>
+            {% endfor %}
+        </thead>
+    </table>
+    <!-- <h2>The current date is {{today}}</h2> -->
+
+{% endblock %}
