@@ -1,6 +1,11 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 import datetime
 import requests
+from django.db import models
+
+from .models import Employee
+from .forms import EmployeeForm
+from .templatetags import filters
 
 # Create your views here.
 
@@ -89,16 +94,18 @@ def load_users2(request):
 
 
 def call_rest_api2(user_id):
-     BASE_URL = 'https://fakestoreapi.com'
-     response = requests.get(f"{BASE_URL}/users/{user_id}")
-     return(response)
+    BASE_URL = 'https://fakestoreapi.com'
+    response = requests.get(f"{BASE_URL}/users/{user_id}")
+    return (response)
 
 # Getting users details individually in card
+
+
 def load_user_details(request):
 
     if request.method == "POST":
-        
-        #Defining a page counter by getting useridcounter form Html page
+
+        # Defining a page counter by getting useridcounter form Html page
         counter = int(request.POST.get("useridcounter"))
 
         # A next botton to prevnextious user card
@@ -106,7 +113,7 @@ def load_user_details(request):
             counter = counter+1
             if counter >= 11:
                 counter = 1
-        
+
         # A pervious botton to previous user card
         elif (request.POST.get("btnPrevious")):
             counter = counter - 1
@@ -124,3 +131,117 @@ def load_user_details(request):
     # Gathering info and image in a dictionary
     context = {"user": response.json(), "images": images}
     return render(request, templatefilename, context)
+
+
+class Authors(models.Model):
+    def __init__(self, author_name, country, book_name):
+        self.author_name = author_name
+        self.country = country
+        self.book_name = book_name
+
+
+def pass_model(request):
+    object = Authors("chadman", "USA", "UFC")
+    templatfilename = 'djangobasicapp/passmodel.html'
+    context = {"Author": object}
+    return render(request, templatfilename, context)
+
+
+# Working with filters
+def buitlt_in_filters(request):
+    processors = [
+        {"name": "Ryzen 3970", "cores": 32},
+        {"name": "Ryzen 3950", "cores": 16},
+        {"name": "Ryzen 3990", "cores": 64},
+    ]
+    context = {
+        "ProbationPeriod": 4,
+        "FirstName": "Connors",
+        "LastName": "McGregor",
+        "PayForFight": 123456,
+        "FirstQuarter": ["Jan", "Feb", "Mar"],
+        "SecondQuarter": ["Apr", "May", "Jun"],
+        "FQuarter": [1, 2, 3],
+        "SQuarter": [4, 5, 6],
+        "AboutMe": "i'am Notorious and I'am Ruthless too!",
+        "now": datetime.datetime.now(),
+        "PreviousFight": "",
+        "NextFight": None,
+        "Processors": processors,
+        "Message": "<h1>I am using escape</h1>",
+        "WebSite": "https://www.uiacademy.co.in"
+    }
+    return render(request, "djangobasicapp/filters.html", context)
+
+
+# Custom filter
+def custom_filter(request):
+    web_frameworks = {'Description': 'Django is a python framework that makes it easier to create dynamic web site',
+                      'InDemand': '4.8', 'PollNumber': 57650}
+    return render(request, 'djangobasicapp/customfilters.html', web_frameworks)
+
+# Working with static files
+def test_static(request):
+    return render(request, 'djangobasicapp/teststatic.html')
+
+
+# Getting data from model
+def employee_list(request):
+    employee = Employee.objects.all()
+    templatefile = "djangobasicapp/access.html"
+    context = {"Employees": employee}
+    return render(request, templatefile, context)
+
+
+# Using queries for access to more info
+def employee_details(request,id):
+    employee = Employee.objects.get(id=id)
+    templatefile = "djangobasicapp/details.html"
+    context = {"Employees": employee}
+    return render(request, templatefile, context)
+
+
+# Deleting employees individually
+def employee_delete(request,id):
+    employee = Employee.objects.get(id=id)
+    templatefile = "djangobasicapp/delete.html"
+    context = {"Employees": employee}
+    if request.method == "POST":
+        employee.delete()
+        # Pass neme of the ulr to redirect()
+        return redirect('list')
+    return render(request, templatefile, context)
+
+
+# Update employees data
+def employee_update(request, id):
+    # Getting data from database and making an object
+    employee = Employee.objects.get(id=id)
+    templatefile = "djangobasicapp/update.html"
+    
+    # Add employee object as instance to form to put info in it
+    form = EmployeeForm(instance=employee)
+    
+    if request.method == "POST":
+        form = EmployeeForm(request.POST, instance=employee)
+        if form.is_valid():
+            form.save()
+            # Redirect to the list after saving
+            return redirect('list')
+
+    context = {"form": form}
+    return render(request, templatefile, context)
+
+
+# Create new employee data
+def employee_insert(request):
+    templatefile = "djangobasicapp/create.html"
+    form = EmployeeForm()
+    if request.method == "POST":
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            form.save()
+        # Pass neme of the ulr to redirect()
+        return redirect('list')
+    context = {'form':form}
+    return render(request, templatefile, context)

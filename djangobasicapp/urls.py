@@ -16,4 +16,13 @@ urlpatterns = [
     path('show/', views.load_users2,name='show'),
     path('index/', views.index,name='index'),
     path('userdetail/', views.load_user_details,name='userdetail'),
+    path('model/', views.pass_model, name='model'),
+    path('filtrs/', views.buitlt_in_filters, name='filters'),
+    path('customfilters/', views.custom_filter, name='customfilters'),
+    path('test/', views.test_static, name='test'),
+    path('list/', views.employee_list, name='list'),
+    path('list/<int:id>/', views.employee_details, name='detail'),
+    path('delete/<int:id>/', views.employee_delete, name='delete'),
+    path('edit/<int:id>/', views.employee_update, name='edit'),
+    path('create/', views.employee_insert, name='create'),
 ]

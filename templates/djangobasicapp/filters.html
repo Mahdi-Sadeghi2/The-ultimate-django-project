@@ -1,0 +1,6 @@
+{% extends 'djangobasicapp/layout.html' %}
+{% block content %}
+{% for processors in Processors %}
+{{processors.name}}
+{% endfor %}
+{% endblock %}

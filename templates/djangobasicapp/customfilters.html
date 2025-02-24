@@ -1,0 +1,14 @@
+{% extends 'djangobasicapp/layout.html' %}
+{% load filters %}
+
+
+{% block content %}
+<ul>
+    <li>Course Description : {{ Description | firstfiveupper }}</li>
+    <li>Course Description : {{ Description | firstfiveupper | lower}}</li>
+    <li>Course Description : {{ Description | firstnupper:10 }}</li>
+    <li>Course Description : {{ Description | lengthlimit:20 }}</li>
+    <li>InDemand : {{ InDemand | rating }}</li>
+    <li>PollNumber : {{PollNumber}} i.e. {{ PollNumber | convertnumbertowords }}</li>
+</ul>
+{% endblock %}
