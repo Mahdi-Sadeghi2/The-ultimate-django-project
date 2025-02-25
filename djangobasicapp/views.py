@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponse, redirect
 import datetime
 import requests
 from django.db import models
+from django.core.paginator import Paginator, PageNotAnInteger
+from django.conf import settings
 
 from .models import Employee
 from .forms import EmployeeForm, UserRegistrationForm
@@ -262,3 +264,20 @@ def signup(request):
         form = UserRegistrationForm()
 
     return render(request, templatefile, {"form": form})
+
+
+# Implementing pagination
+def page(request):
+    templatefile = "djangobasicapp/pagination.html"
+    # How many item must be in a page
+    page_size = int(request.GET.get(
+        'page_size', getattr(settings, 'PAGE_SIZE', 5)))
+    # Current page
+    page = request.GET.get('page', 1)
+    employee = Employee.objects.all()
+    paginator = Paginator(employee, page_size)
+    try:
+        employee_page = paginator.page(page)
+    except PageNotAnInteger:
+        employee_page = paginator.page(1)
+    return render(request, templatefile, {'employees_page': employee_page, 'page_size':page_size})

@@ -26,4 +26,5 @@ urlpatterns = [
     path('edit/<int:id>/', views.employee_update, name='edit'),
     path('create/', views.employee_insert, name='create'),
     path('signup/', views.signup, name='signup'),
+    path('page/', views.page, name='page'),
 ]
