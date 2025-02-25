@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validations Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        .errorlist{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <center><h2>User Form</h2></center>
+        <br/>
+        <form method="post">
+            {% csrf_token %}    
+           <table class="table">
+                {{ form.as_table }}     
+            </table>   
+            <button type="submit" formnovalidate="formnovalidate" class="btn btn-primary">Submit</button>
+        </form> 
+    </div>
+</body>
+</html>

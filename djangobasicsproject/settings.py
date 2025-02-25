@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     # My apps:
     'djangobasicapp.apps.DjangobasicappConfig',
     # 'templatetags.apps.TemplatetagsConfig',
+    'phonenumber_field',
+    'phonenumbers',
 ]
 
 MIDDLEWARE = [

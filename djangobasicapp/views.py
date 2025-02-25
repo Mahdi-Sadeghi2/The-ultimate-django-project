@@ -4,7 +4,7 @@ import requests
 from django.db import models
 
 from .models import Employee
-from .forms import EmployeeForm
+from .forms import EmployeeForm, UserRegistrationForm
 from .templatetags import filters
 
 # Create your views here.
@@ -181,6 +181,8 @@ def custom_filter(request):
     return render(request, 'djangobasicapp/customfilters.html', web_frameworks)
 
 # Working with static files
+
+
 def test_static(request):
     return render(request, 'djangobasicapp/teststatic.html')
 
@@ -194,7 +196,7 @@ def employee_list(request):
 
 
 # Using queries for access to more info
-def employee_details(request,id):
+def employee_details(request, id):
     employee = Employee.objects.get(id=id)
     templatefile = "djangobasicapp/details.html"
     context = {"Employees": employee}
@@ -202,7 +204,7 @@ def employee_details(request,id):
 
 
 # Deleting employees individually
-def employee_delete(request,id):
+def employee_delete(request, id):
     employee = Employee.objects.get(id=id)
     templatefile = "djangobasicapp/delete.html"
     context = {"Employees": employee}
@@ -218,10 +220,10 @@ def employee_update(request, id):
     # Getting data from database and making an object
     employee = Employee.objects.get(id=id)
     templatefile = "djangobasicapp/update.html"
-    
+
     # Add employee object as instance to form to put info in it
     form = EmployeeForm(instance=employee)
-    
+
     if request.method == "POST":
         form = EmployeeForm(request.POST, instance=employee)
         if form.is_valid():
@@ -243,5 +245,20 @@ def employee_insert(request):
             form.save()
         # Pass neme of the ulr to redirect()
         return redirect('list')
-    context = {'form':form}
+    context = {'form': form}
     return render(request, templatefile, context)
+
+
+# User Signup
+def signup(request):
+    templatefile = "djangobasicapp/signup.html"
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            print("form validations are successful")
+            form.save()
+            return redirect('list')
+    else:
+        form = UserRegistrationForm()
+
+    return render(request, templatefile, {"form": form})
