@@ -4,6 +4,7 @@ import requests
 from django.db import models
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.conf import settings
+from django.db.models import Q
 
 from .models import Employee
 from .forms import EmployeeForm, UserRegistrationForm
@@ -274,10 +275,31 @@ def page(request):
         'page_size', getattr(settings, 'PAGE_SIZE', 5)))
     # Current page
     page = request.GET.get('page', 1)
-    employee = Employee.objects.all()
+    # Adding search functionality to the page
+    search_query = request.GET.get('search', '')
+    # employee = Employee.objects.all()
+    # Get the sorting parameters from the request's query parameters
+    sort_by = request.GET.get('bort_by', 'id')
+    sort_order = request.GET.get('sort_order', 'asc')
+    valid_sort_fields = ['id', 'fisrt_name', 'last_name', 'title_name']
+    if sort_by not in valid_sort_fields:
+        sort_by: 'id'
+    # Addin Jquery to search box
+    employee = Employee.objects.filter(Q(id__icontains=search_query) | Q(fisrt_name__icontains=search_query) | Q(last_name__icontains=search_query) | Q(tilte_name__icontains=search_query) | Q(
+        department__department_name__icontains=search_query) | Q(destination_country__country_name__icontains=search_query) | Q(country__icontains=search_query) | Q(email__icontains=search_query))
+
+    # Apply sorting
+    if sort_order == 'desc':
+        # Sort by descending order
+        employee = employee.order_by(f'-{sort_order}')
+    else:
+        # Sort by ascending order
+        employee = employee.order_by(sort_by)
+
     paginator = Paginator(employee, page_size)
     try:
         employee_page = paginator.page(page)
     except PageNotAnInteger:
         employee_page = paginator.page(1)
-    return render(request, templatefile, {'employees_page': employee_page, 'page_size':page_size})
+
+    return render(request, templatefile, {'employees_page': employee_page, 'page_size': page_size, 'search_query': search_query, 'sort_by': sort_by, 'sort_order': sort_order})

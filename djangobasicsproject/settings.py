@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # My apps:
     'djangobasicapp.apps.DjangobasicappConfig',
-    # 'templatetags.apps.TemplatetagsConfig',
+    'querysample.apps.QuerysampleConfig',
     'phonenumber_field',
     'phonenumbers',
 ]

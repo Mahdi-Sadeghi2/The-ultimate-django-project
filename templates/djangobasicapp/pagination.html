@@ -14,6 +14,8 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tofsjonas/sortable@latest/sortable.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/tofsjonas/sortable@latest/sortable.min.js"></script>
 </head>
 
 <body>
@@ -21,6 +23,12 @@
         <center>
             <h2>View All employees</h2>
         </center>
+        <br>
+        <form method="get">
+            <label for="search">Enter the keyword to search:</label>
+            <input type="text" id="search" name="search" value="{{ search_query }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
     </div>
     <form id="page-size-form" method="get" action="">
         <label for="page_size">Items per Page:</label>
@@ -33,7 +41,7 @@
             <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
         </select>
     </form>
-    <table class="table table-striped table-bordered table-hover" style="background-color: aqua;">
+    <table class="table sortable table-striped table-bordered table-hover" style="background-color: aqua;">
         <thead class="table-dark">
             <tr>
                 <th>First Name</th>
