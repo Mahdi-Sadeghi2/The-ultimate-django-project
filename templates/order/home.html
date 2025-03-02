@@ -1,0 +1,14 @@
+{% extends 'order/basic.html'%}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Home Page, {{ user.first_name}} {{ user.last_name }}!</h2>
+    <ul>
+        
+            <li><a href="{% url 'password' %} ">Change Password</a></li>
+            <li><a href="{% url 'profile' %} ">Change Profile</a></li>
+            <li><a href="{% url 'delete_account' %} ">Delete Account</a></li>
+            <li><a href="{% url 'signout' %} ">Signout</a></li>
+    </ul>
+{% endblock %}

@@ -1,10 +1,11 @@
+from django.contrib.auth.models import AbstractUser
+
 from django.db import models
 
 # Create your models here.
 
-
-class Countries(models.Model):
-    COUNTRIES = [
+class CustomUser(AbstractUser):
+     COUNTRIES = [
         ("IND", "India"),
         ("USA", "United States of America"),
         ("UK", "United Kingdom"),
@@ -79,36 +80,6 @@ class Countries(models.Model):
         ("PNG", "Papua New Guinea"),
         ("TLS", "Timor-Leste"),
     ]
-
-    country = models.CharField(max_length=35, choices=COUNTRIES, default=None)
-
-    def __str__(self):
-        return self.country
-
-
-class Sate(models.Model):
-    name = models.CharField(max_length=100, null=True)
-    country = models.ForeignKey(
-        Countries, on_delete=models.CASCADE, default=None)
-
-    def __str__(self):
-        return self.name
-
-
-class City(models.Model):
-    name = models.CharField(max_length=100, null=True)
-    state = models.ForeignKey(Sate, on_delete=models.CASCADE, default=None)
-
-    def __str__(self):
-        return self.name
-
-
-class Employees(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    country = models.ForeignKey(Countries, on_delete=models.CASCADE)
-    states = models.ForeignKey(Sate, on_delete=models.CASCADE)
-    cities = models.ForeignKey(City, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.first_name + " " + self.last_name
+     
+     country = models.CharField(max_length=50,choices=COUNTRIES)
+     address = models.CharField(max_length=50, blank=True)

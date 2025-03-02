@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Data</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+<div>
+    <h1 class="mb-4">Django Session</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Session Key</th>
+                <th>Session Value</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, value in session_data %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="{% url 'read_session' key %}" class="btn btn-primary btn-sm">Read</a>
+                            </div>
+                            <div>
+                                <form method="post" action="{% url 'delete_session' key %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2 class="mb-3">Add Session</h2>
+    <form method="post" action="{% url 'add_session' %}" id="addSessionForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="session_key">Session Key</label>
+            <input type="text" class="form-control" name="session_key" required>
+        </div>
+        <div class="form-group">
+            <label for="session_value">Session Value:</label>
+            <input type="text" class="form-control" name="session_value" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Session</button>
+    </form>
+    <hr>
+    <a href="{% url 'clear_sessions' %}">Clear All Sessions</a>
+</div>
+</body>
+</html>

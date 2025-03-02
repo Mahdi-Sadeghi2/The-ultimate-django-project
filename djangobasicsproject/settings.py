@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # My apps:
     'djangobasicapp.apps.DjangobasicappConfig',
     'querysample.apps.QuerysampleConfig',
+    'order.apps.OrderConfig',
     'phonenumber_field',
     'phonenumbers',
 ]
@@ -136,3 +137,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # For pagination
 PAGE_SIZE = 5
+
+
+LOGIN_URL = 'login'
+
+AUTH_USER_MODEL = 'order.customuser'

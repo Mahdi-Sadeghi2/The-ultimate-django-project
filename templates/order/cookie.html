@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Cookies Example</title>
+</head>
+<body>
+    <div>
+    <h1 class="mb-4">Browser Cookies</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Cookie Name</th>
+                        <th>Cookie Value</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in cookies.items %}
+                    <tr>
+                        <td>{{ key}}</td>
+                        <td>{{ value}}</td>
+                        <td><div class="row">
+                            <div class="col-md-6">
+                                <a href="{% url 'read_cookie' key %}" class="btn btn-primary btn-sm">Read</a>
+                            </div>
+                            <div>
+                                <form method="post" action="{% url 'delete_cookie' key %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        </div></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <h2 class="mb-3">Add Cookie</h2>
+            <form method="post" action="{% url 'add_cookie' %}" id="addCookieForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="cookie_name">Cookie Name:</label>
+                    <input type="text"  class="form-control" name="cookie_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="cookie_value">Cookie Value:</label>
+                    <input type="text"  class="form-control" name="cookie_value" required>
+                </div>
+                <button type="submit" class="btn btn-success">Add Cookie</button>
+            </form>
+            <hr>
+            <a href="{% url 'clear_cookies' %}" class="btn btn-primary btn-sm">
+                Delete all Cookies
+            </a>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
